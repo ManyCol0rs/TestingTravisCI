@@ -28,6 +28,22 @@
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
     <jar jarfile="${dist}/lib/MyProject-${DSTAMP}.jar" basedir="${build}"/>
   </target>
+  
+  <target name="test" depends="dist">
+    <antlr target="antlr.g" outputdirectory="${tmp.dir}"/>
+    <fail>
+      <condition>
+        <!-- to prove each of these files exists;
+             ANTLR >= 2.7.6 leaves behind new (.smap) files as well. -->
+        <resourcecount when="ne" count="2">
+          <fileset dir="${tmp.dir}">
+            <include name="OperationsOnNums.java" />
+            <include name="TestOperationsOnNums.java" />
+          </fileset>
+        </resourcecount>
+      </condition>
+    </fail>
+  </target>
 
   <target name="clean"
         description="clean up">
